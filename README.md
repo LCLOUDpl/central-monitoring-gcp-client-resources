@@ -9,7 +9,7 @@ Basic Terraform to configure resources needed for integration with Central Monit
 module "lcloud_monitoring" {
   source = "git@git.lcloud.pl:internal/solutions/monitoring-hub/central-monitoring-gcp-client-resources.git"
 
-  endpoint    = "https://central-monitoring-api.linxsys-testing.lcloud.pl/v1/gcp-monitoring/*****"
+  endpoint    = "https://central-monitoring-api.srv.lcloud.pl/v1/gcp-monitoring/*****"
   environment = "staging"
 }
 ```
