@@ -7,4 +7,8 @@ locals {
     environment = var.environment
     managed_by  = "terraform"
   }
+
+  api_list = [
+    "monitoring.googleapis.com"
+  ]
 }

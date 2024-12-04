@@ -5,6 +5,15 @@
  * https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_notification_channel
  */
 
+resource "google_project_service" "this" {
+  for_each = toset(local.api_list)
+
+  project            = data.google_project.project.project_id
+  service            = each.value
+  disable_on_destroy = false
+}
+
+# Notifications Channel
 resource "google_pubsub_topic" "lcloud_support" {
   name  = "lcloud-support"
 
@@ -30,14 +39,16 @@ resource "google_pubsub_subscription" "lcloud_support" {
   labels = local.labels
 }
 
-data "google_project" "project" {}
-
 resource "google_pubsub_topic_iam_binding" "lcloud_support" {
   topic   = google_pubsub_topic.lcloud_support.name
 
   role    = "roles/pubsub.publisher"
   members = [
     "serviceAccount:service-${data.google_project.project.number}@gcp-sa-monitoring-notification.iam.gserviceaccount.com",
+  ]
+
+  depends_on = [
+    google_pubsub_subscription.lcloud_support
   ]
 }
 
